@@ -292,7 +292,7 @@ defined?(PTY) and defined?(IO.console) and TestIO_Console.class_eval do
         con.cursor_left(2); con.puts
         con.cursor_up(1); con.puts
       end;
-      assert_equal("\e[6n", r.readpartial(5))
+      assert_equal("\e[6n", r.readpartial(1024))
       w.print("\e[12;34R"); w.flush
       assert_equal([11, 33], eval(r.gets))
       assert_equal("\e[3B", r.gets.chomp)
