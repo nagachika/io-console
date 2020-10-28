@@ -22,6 +22,8 @@ jobs:
         run: |
           rake build
           set pkg/*.gem && echo "::set-output name=gem::${1#*/}"
+          ref=${{ github.ref }}
+          echo "::set-output name=short-ref::${ref#*/*/}"
 
       - name: Create Release
         id: create_release
@@ -29,10 +31,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: snapshot-${{ github.sha }}
-          release_name: Snapshot ${{ github.ref }}
+          tag_name: ${{ github.sha }}
+          release_name: Snapshot ${{ steps.package.outputs.short-ref }}
           prerelease: true
-          body: Snapshot ${{ github.ref }}
+          body: Snapshot ${{ steps.package.outputs.short-ref }}@${{ github.sha }}
 
       - name: Upload Release Asset
         id: upload-release-asset
