@@ -1638,6 +1638,13 @@ Init_console(void)
 void
 InitVM_console(void)
 {
+    /* stores the opened console in a constant */
+    rb_define_singleton_method(rb_cIO, "console", console_dev, -1);
+
+#ifdef HAVE_RB_EXT_RACTOR_SAFE
+    RB_EXT_RACTOR_SAFE(true);
+#endif
+
     rb_define_method(rb_cIO, "raw", console_raw, -1);
     rb_define_method(rb_cIO, "raw!", console_set_raw, -1);
     rb_define_method(rb_cIO, "cooked", console_cooked, 0);
@@ -1672,7 +1679,6 @@ InitVM_console(void)
 #if ENABLE_IO_GETPASS
     rb_define_method(rb_cIO, "getpass", console_getpass, -1);
 #endif
-    rb_define_singleton_method(rb_cIO, "console", console_dev, -1);
     {
 	VALUE mReadable = rb_define_module_under(rb_cIO, "generic_readable");
 	rb_define_method(mReadable, "getch", io_getch, -1);
