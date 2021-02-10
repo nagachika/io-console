@@ -17,3 +17,7 @@ runs:
     - name: Run test
       run: rake
       shell: sh
+    - name: nm
+      run: |
+        find . -name '*.o' -exec nm --undefined-only {} +
+      shell: sh
