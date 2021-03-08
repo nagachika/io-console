@@ -19,7 +19,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - uses: ./.github/actions/test
+    - run: bundle install
+    - run: rake
     - uses: ./.github/actions/build
       id: build
       if: "matrix.ruby == '3.0'"
